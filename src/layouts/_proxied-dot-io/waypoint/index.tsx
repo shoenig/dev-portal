@@ -21,17 +21,13 @@ const { ConsentManager, openConsentManager } = createConsentManager({
 	otherServices: [...localConsentManagerServices],
 })
 
-function WaypointIoLayout({
-	children,
-}: {
-	/** Page contents to render in the layout */
-	children: React.ReactNode
-}): React.ReactElement {
+function WaypointIoLayout({ children, data }: Props): React.ReactElement {
 	usePageviewAnalytics({
 		siteId: process.env.NEXT_PUBLIC_FATHOM_SITE_ID_WAYPOINT,
 		includedDomains: productData.analyticsConfig.includedDomains,
 	})
 	const { themeClass } = useProductMeta(productData.name as Products)
+	const { waypointNav } = data ?? {}
 
 	return (
 		<>
@@ -54,7 +50,55 @@ function WaypointIoLayout({
 						/>
 					)}
 					<HashiStackMenu onPanelChange={() => null} />
-					<ProductSubnav />
+					<ProductSubnav
+						menuItems={[
+							{ text: 'Overview', url: '/' },
+							waypointNav.useCases.length > 0
+								? {
+										text: 'Use Cases',
+										submenu: [
+											...waypointNav.useCases.map((item: UseCase) => {
+												return {
+													text: item.text,
+													url: `/use-cases/${item.url}`,
+												}
+											}),
+										],
+								  }
+								: undefined,
+							{
+								text: 'Enterprise',
+								url: 'https://www.hashicorp.com/products/consul/?utm_source=oss&utm_medium=header-nav&utm_campaign=consul',
+								type: 'outbound',
+							},
+							'divider',
+							{
+								text: 'Tutorials',
+								url: 'https://learn.hashicorp.com/consul',
+								type: 'outbound',
+							},
+							{
+								text: 'Docs',
+								url: '/docs',
+								type: 'inbound',
+							},
+							{
+								text: 'API',
+								url: '/api-docs',
+								type: 'inbound',
+							},
+							{
+								text: 'CLI',
+								url: '/commands',
+								type: 'inbound,',
+							},
+							{
+								text: 'Community',
+								url: '/community',
+								type: 'inbound',
+							},
+						].filter(Boolean)}
+					/>
 					<div className={themeClass}>{children}</div>
 				</ProductMetaProvider>
 			</Min100Layout>
@@ -64,3 +108,14 @@ function WaypointIoLayout({
 }
 
 export default WaypointIoLayout
+
+type UseCase = { url: string; text: string }
+
+interface Props {
+	children: React.ReactChildren
+	data: {
+		waypointNav: {
+			useCases: Array<UseCase>
+		}
+	}
+}
