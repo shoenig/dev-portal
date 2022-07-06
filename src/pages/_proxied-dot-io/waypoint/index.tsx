@@ -33,7 +33,7 @@ export default function WaypointHomepage({ data }): React.ReactElement {
 		inPracticeCtaImage,
 		useCasesHeading,
 		useCasesDescription,
-		useCasesCards,
+		useCases,
 		caseStudiesHeading,
 		caseStudiesDescription,
 		caseStudiesFeatured,
@@ -52,7 +52,7 @@ export default function WaypointHomepage({ data }): React.ReactElement {
 			<Head>{renderMetaTags(seo)}</Head>
 
 			<IoHomeHero
-				pattern={require('/public/waypoint/img/home-hero-pattern.svg')}
+				pattern={require('/public/waypoint-public/img/home-hero-pattern.svg')}
 				brand="waypoint"
 				heading={heroHeading}
 				description={heroDescription}
@@ -83,31 +83,31 @@ export default function WaypointHomepage({ data }): React.ReactElement {
 				}}
 			/>
 
-			<section className={s.useCases}>
-				<div className={s.container}>
-					<IoCardContainer
-						heading={useCasesHeading}
-						description={useCasesDescription}
-						cardsPerRow={4}
-						cards={useCasesCards.map((card) => {
-							return {
-								eyebrow: card.eyebrow,
-								link: {
-									url: card.link,
-									type: 'inbound',
-								},
-								heading: card.heading,
-								description: card.description,
-								products: card.products,
-							}
-						})}
-					/>
-				</div>
-			</section>
+			{useCases.length > 0 ? (
+				<section className={s.useCases}>
+					<div className={s.container}>
+						<IoCardContainer
+							heading={useCasesHeading}
+							description={useCasesDescription}
+							cardsPerRow={4}
+							cards={useCases.map((usecase) => {
+								return {
+									link: {
+										url: `/use-cases/${usecase.slug}`,
+										type: 'inbound',
+									},
+									heading: usecase.heroHeading,
+									description: usecase.heroDescription,
+								}
+							})}
+						/>
+					</div>
+				</section>
+			) : null}
 
 			<IoHomeInPractice
 				brand="waypoint"
-				pattern={require('/public/waypoint/img/practice-pattern.svg')}
+				pattern={require('/public/waypoint-public/img/practice-pattern.svg')}
 				heading={inPracticeHeading}
 				description={inPracticeDescription}
 				cards={inPracticeCards.map((card) => {
