@@ -1,6 +1,5 @@
 import React from 'react'
 import HashiHead from '@hashicorp/react-head'
-import HashiStackMenu from '@hashicorp/react-hashi-stack-menu'
 import AlertBanner from '@hashicorp/react-alert-banner'
 import Min100Layout from '@hashicorp/react-min-100-layout'
 import useProductMeta, {
@@ -50,7 +49,6 @@ function WaypointIoLayout({ children, data }: Props): React.ReactElement {
 							hideOnMobile
 						/>
 					)}
-					<HashiStackMenu onPanelChange={() => null} />
 					<ProductSubnav
 						menuItems={[
 							{ text: 'Overview', url: '/' },
