@@ -12,15 +12,15 @@ import ProductSubnav from 'components/_proxied-dot-io/vagrant/subnav'
 import productData from 'data/vagrant.json'
 import query from './query.graphql'
 
+type UseCase = { url: string; text: string }
+
 interface Props {
-	/**
-	 * Data from data which may contain nav items for the use cases nav
-	 */
+	children: React.ReactChildren
 	data: {
-		useCaseNavItems: Array<{ url: string; text: string }>
+		vagrantNav: {
+			useCases: Array<UseCase>
+		}
 	}
-	/** Page contents to render in the layout */
-	children: React.ReactNode
 }
 
 const { ConsentManager, openConsentManager } = createConsentManager({
@@ -35,7 +35,7 @@ function VagrantIoLayout({ children, data }: Props): React.ReactElement {
 		includedDomains: productData.analyticsConfig.includedDomains,
 	})
 	const { themeClass } = useProductMeta(productData.name as Products)
-	const { useCaseNavItems } = data
+	const { vagrantNav } = data ?? {}
 
 	return (
 		<>
@@ -64,20 +64,22 @@ function VagrantIoLayout({ children, data }: Props): React.ReactElement {
 							type: 'inbound',
 						},
 						'divider',
+						vagrantNav.useCases.length > 0
+							? {
+									text: 'Use Cases',
+									submenu: [
+										...vagrantNav.useCases.map((item: UseCase) => {
+											return {
+												text: item.text,
+												url: `/use-cases/${item.url}`,
+											}
+										}),
+									],
+							  }
+							: undefined,
 						{
-							text: 'Use Cases',
-							submenu: [
-								...useCaseNavItems.map((item) => {
-									return {
-										text: item.text,
-										url: `/use-cases/${item.url}`,
-									}
-								}),
-							].sort((a, b) => a.text.localeCompare(b.text)),
-						},
-						{
-							text: 'Tutorials',
-							url: 'https://learn.hashicorp.com/vagrant',
+							text: 'Intro',
+							url: '/intro',
 							type: 'inbound',
 						},
 						{
@@ -86,16 +88,11 @@ function VagrantIoLayout({ children, data }: Props): React.ReactElement {
 							type: 'inbound',
 						},
 						{
-							text: 'API',
-							url: '/api-docs',
-							type: 'inbound',
-						},
-						{
 							text: 'Community',
 							url: '/community',
 							type: 'inbound',
 						},
-					]}
+					].filter(Boolean)}
 				/>
 				<div className={themeClass}>{children}</div>
 			</Min100Layout>
