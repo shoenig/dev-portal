@@ -86,7 +86,6 @@ function HomePage({ data }): JSX.Element {
 				<SectionMonitorAppHealth
 					heading={monitorAppHealthSection.heading}
 					description={monitorAppHealthSection.description}
-					features={[]}
 				/>
 
 				<SectionExtendPlugins
