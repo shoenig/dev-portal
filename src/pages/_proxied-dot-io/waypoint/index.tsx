@@ -145,7 +145,7 @@ export async function getStaticProps() {
 	const pageData = {
 		seo,
 		hero: {
-			hero: heroHeading,
+			heading: heroHeading,
 			description: heroDescription,
 			cta: heroCta[0],
 		},
@@ -205,7 +205,7 @@ export default HomePage
 function formatFeatures(features) {
 	const formattedFeatures = features.map((feature) => {
 		return {
-			icon: feature.icon.url,
+			icon: feature.icon,
 			heading: feature.heading,
 			description: feature.description,
 			...(feature.link.length > 0
