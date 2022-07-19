@@ -34,10 +34,6 @@ function WaypointIoLayout({
 			text: string
 			url: string
 		}>
-		navLinks: Array<{
-			text: string
-			url: string
-		}>
 	}
 	/** Page contents to render in the layout */
 	children: React.ReactNode
@@ -70,6 +66,7 @@ function WaypointIoLayout({
 						heading={footer.heading}
 						description={footer.description}
 						cards={formattedFooterCards}
+						ctaLinks={footer.ctaLinks}
 					/>
 				}
 			>
